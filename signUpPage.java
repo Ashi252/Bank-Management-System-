@@ -54,6 +54,8 @@ JComboBox<String> date = new JComboBox<>(new String[]{"1", "2", "3", "4", "5", "
 JCheckBox terms = new JCheckBox("Accept Terms and Conditions");
 ImageIcon image = new ImageIcon("Images/Untitled.png");
 JProgressBar bar = new JProgressBar(0,500);
+JComboBox<String> account = new JComboBox<>(new String[]{"Savings", "Current", "Fixed Deposit"});
+JLabel AccountType = new JLabel("Account Type");
 
 
 signUpPage(){
@@ -70,27 +72,25 @@ bar.setBackground(Color.black);
 
 
 // working on the text fields and their titles
-  firstNameMiddleName.setBounds(125,150,140,25);
-  firstNameMiddleName.setLocation(125, 150);
-  textField.setBounds(125,170,230,25);
-  textField.setLocation(125, 170);
+  firstNameMiddleName.setBounds(125,120,140,25);
+  textField.setBounds(125,140,230,25);
 
-  lastName.setBounds(125,200,75,25);
-  textField1.setBounds(125,225,230,25);
+  lastName.setBounds(125,170,75,25);
+  textField1.setBounds(125,190,230,25);
 
-  phone.setBounds(125,250,75,25);
-  textField2.setBounds(125,270,230,25);
+  phone.setBounds(125,220,75,25);
+  textField2.setBounds(125,240,230,25);
 
-  password.setBounds(125,300,75,25);
-  passwordField.setBounds(125,320,230,25);
+  password.setBounds(125,270,75,25);
+  passwordField.setBounds(125,290,230,25);
   
-  CPassword.setBounds(125,350,140,25);
-  Confirm.setBounds(125,370,230,25);
+  CPassword.setBounds(125,320,140,25);
+  Confirm.setBounds(125,340,230,25);
   
-  DOB.setBounds(125,400,100,25);
-  date.setBounds(125,420,40,20);
-  month.setBounds(162, 420, 60, 20);
-  year.setBounds(220,420,60,20);
+  DOB.setBounds(125,370,100,25);
+  date.setBounds(125,390,40,20);
+  month.setBounds(162, 390, 60, 20);
+  year.setBounds(220,390,60,20);
   
   // set cursor for the component
   date.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -107,9 +107,17 @@ bar.setBackground(Color.black);
   back.setCursor(new Cursor(Cursor.HAND_CURSOR));
   View.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-  Gender.setBounds(125,450,100,25);
-  gender.setBounds(125,470,230,25);
+  Gender.setBounds(125,420,100,25);
+  gender.setBounds(125,440,230,25);
 
+  // working on the account type
+  AccountType.setBounds(125,470,100,20);
+  account.setBounds(125,490,230,25);
+
+  // working on the terms check box
+  terms.setBounds(125, 520, 230, 25);
+  terms.setFocusable(false);
+  terms.addActionListener(this);
 // working on the signUP button
   signUP.setBounds(200, 560, 90, 25);
   signUP.setText("Sign UP");
@@ -117,10 +125,7 @@ bar.setBackground(Color.black);
   signUP.addActionListener(this);
 
 
-// working on the terms check box
-  terms.setBounds(125, 500, 230, 25);
-  terms.setFocusable(false);
-  terms.addActionListener(this);
+
   
   
   
@@ -130,16 +135,16 @@ bar.setBackground(Color.black);
   back.addActionListener(this);
   back.setFocusable(false);
   back.setText("<-Back");
-// Ayu Mirage
+  
 // working on the terms and conditions button
-  View.setBounds(360, 500, 80, 25);
+  View.setBounds(360, 520, 80, 25);
   View.setText("View");
   View.setToolTipText("View Terms and Conditions");
   View.setFocusable(false);
   View.addActionListener(this);
 
 // working on the massage label
-  Massage.setBounds(125,530,250,25);
+  Massage.setBounds(125,100,250,25);
   Massage.setFont(new Font(null, Font.ITALIC,12));
 
 // adding all components to the frame
@@ -164,6 +169,8 @@ frame.add(lastName);
 frame.add(dob);
 frame.add(DOB);
 frame.add(gender);
+frame.add(account);
+frame.add(AccountType);
 frame.add(Gender);
 frame.add(formPanel, BorderLayout.CENTER);
 frame.add(TPanel, BorderLayout.NORTH);
