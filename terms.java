@@ -32,7 +32,7 @@ public terms(){
   frame.add(welcome1);
   frame.add(welcome2);
   frame.add(term);
-
+ 
 
 
   prePage.setBounds(0, 80, 85, 25);
@@ -99,7 +99,7 @@ public terms(){
     frame.setResizable(false);
 
 
-    
+    frame.setLocationRelativeTo(null);
 
 }
 
