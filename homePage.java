@@ -6,10 +6,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
+// import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -17,7 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 
-public class homePage implements ActionListener {
+
+
+public class homePage implements ActionListener{
 JFrame frame = new JFrame();
 ImageIcon frameIcon = new ImageIcon("Images/Untitled.png");
 JPanel buttonsPanel = new JPanel();
@@ -25,11 +28,27 @@ JPanel TPanel = new JPanel();
 JLabel label = new JLabel();
 JButton[] buttons = new JButton[4];
 JLabel userLabel = new JLabel();
+JButton transferLabel = new JButton();
+JButton transactionHistory = new JButton();
+JButton sports = new JButton();
+JButton PayBills = new JButton();
+JButton dataLabel = new JButton();
+JButton loan = new JButton();
+JLabel welcome = new JLabel();
+JLabel Hi = new JLabel();
+JLabel balances = new JLabel();
 JLayeredPane BPanel = new JLayeredPane();
 ImageIcon home = new ImageIcon("Images/home.png");
 ImageIcon setting = new ImageIcon("Images/settings.png");
 ImageIcon notification = new ImageIcon("Images/envelope.png");
 ImageIcon profile = new ImageIcon("Images/user.png");
+ImageIcon transfer = new ImageIcon("Images/money-coin-transfer.png");
+ImageIcon win = new ImageIcon("Images/trophy-star.png");
+ImageIcon history = new ImageIcon("Images/time-past.png");
+ImageIcon data = new ImageIcon("Images/priority-arrows.png");
+ImageIcon bills = new ImageIcon("Images/hand-bill.png");
+ImageIcon loanBills = new ImageIcon("Images/loan.png");
+
 
 public void buttons(){
   for(int i=0; i<4;i++){
@@ -54,17 +73,125 @@ public void buttons(){
 }
 
 homePage(){
-// working on the
+  balances.setBounds(180,145,120,15);
+  balances.setText("Balance: " + userDB.balance);
+  balances.setForeground(Color.BLUE);
+  balances.setFont(new Font(null, Font.BOLD, 12));
+  balances.setOpaque(true);
+  balances.setBackground(new Color(0xfafafa));
+  balances.setFocusable(false);
+
+  Hi.setBounds(180,125,120,13);
+  Hi.setText("Hi " + userDB.FirstName);
+  Hi.setForeground(Color.BLUE);
+  Hi.setFont(new Font(null, Font.BOLD, 10));
+  Hi.setBackground(new Color(0xfafafa));
+  Hi.setOpaque(true);
+  Hi.setFocusable(false);
+  
+  // Hi.setBorder(BorderFactory.createEtchedBorder());
+
+welcome.setBounds(0,10,120,15);
+welcome.setText("Welcome " + userDB.FirstName);
+welcome.setForeground(Color.BLUE);
+welcome.setFont(new Font(null, Font.BOLD, 12));
+welcome.setOpaque(true);
+welcome.setBackground(new Color(0xfafafa));
+welcome.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+// working on the Utility components
+transferLabel.setOpaque(true);
+transferLabel.setBounds(20,230,80,50);
+transferLabel.setBorder(BorderFactory.createBevelBorder(0));
+transferLabel.setIcon(transfer);
+transferLabel.setToolTipText("Make a Transfer");
+transferLabel.setHorizontalAlignment(JButton.CENTER);
+transferLabel.setVerticalAlignment(JButton.CENTER);
+transferLabel.addActionListener(this);
+transferLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+transferLabel.setFocusable(false);
+
+
+dataLabel.setOpaque(true);
+dataLabel.setBounds(115,230,80,50);
+dataLabel.setBorder(BorderFactory.createBevelBorder(0));
+dataLabel.setIcon(data);
+dataLabel.setToolTipText("Buy mobile Data");
+dataLabel.setHorizontalAlignment(JButton.CENTER);
+dataLabel.setVerticalAlignment(JButton.CENTER);
+dataLabel.addActionListener(this);
+dataLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+dataLabel.setFocusable(false);
+
+
+loan.setOpaque(true);
+loan.setBounds(20,300,80,50);
+loan.setBorder(BorderFactory.createBevelBorder(0));
+loan.setIcon(loanBills);
+loan.setToolTipText("Take a Loan");
+loan.setHorizontalAlignment(JButton.CENTER);
+loan.setVerticalAlignment(JButton.CENTER);
+loan.addActionListener(this);
+loan.setCursor(new Cursor(Cursor.HAND_CURSOR));
+loan.setFocusable(false);
+
+sports.setOpaque(true);
+sports.setBounds(210,230,80,50);
+sports.setIcon(win);
+sports.setToolTipText("Credit your betting account");
+sports.setHorizontalAlignment(JButton.CENTER);
+sports.setVerticalAlignment(JButton.CENTER);
+sports.addActionListener(this);
+sports.setBorder(BorderFactory.createBevelBorder(0));
+sports.setCursor(new Cursor(Cursor.HAND_CURSOR));
+sports.setFocusable(false);
+
+transactionHistory.setOpaque(true);
+transactionHistory.setBounds(305,230,80,50);
+transactionHistory.setIcon(history);
+transactionHistory.setToolTipText("View Transaction History");
+transactionHistory.setHorizontalAlignment(JButton.CENTER);
+transactionHistory.setVerticalAlignment(JButton.CENTER);
+transactionHistory.addActionListener(this);
+transactionHistory.setBorder(BorderFactory.createBevelBorder(0));
+transactionHistory.setCursor(new Cursor(Cursor.HAND_CURSOR));
+transactionHistory.setFocusable(false);
+
+PayBills.setOpaque(true);
+PayBills.setBounds(400,230,80,50);
+PayBills.setIcon(bills);
+PayBills.setToolTipText("Pay Bills");
+PayBills.setHorizontalAlignment(JButton.CENTER);
+PayBills.setVerticalAlignment(JButton.CENTER);
+PayBills.addActionListener(this);
+PayBills.setBorder(BorderFactory.createBevelBorder(0));
+PayBills.setCursor(new Cursor(Cursor.HAND_CURSOR));
+PayBills.setFocusable(false);
+
+// working on the userprofileIcon
 userLabel.setOpaque(true);
 userLabel.setBackground(Color.BLUE);
-userLabel.setBounds(200,90,80,80);
+userLabel.setBounds(200,40,80,80);
     BPanel.setBounds(0,85,500,650);
     BPanel.add(userLabel);
+    BPanel.add(transferLabel);
+    BPanel.add(dataLabel);
+    BPanel.add(sports);
+    BPanel.add(transactionHistory);
+    BPanel.add(PayBills);
+    BPanel.add(welcome);
+    BPanel.add(Hi);
+    BPanel.add(buttonsPanel);
+    BPanel.add(balances);
+    BPanel.add(loan);
     frame.add(BPanel);
+    
+
+
 
 //working on the button panel
 buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER,10,4));
-buttonsPanel.setPreferredSize(new Dimension(100,30));
+buttonsPanel.setBounds(0,480,500,100);
 
 
 
@@ -90,10 +217,10 @@ TPanel.setLayout(new BorderLayout());
     frame.setVisible(true);
     frame.setIconImage(frameIcon.getImage());
     frame.setTitle("Realm Bank");
-    frame.setResizable(true);
+    frame.setResizable(false);
     
 frame.add(TPanel, BorderLayout.NORTH);
-frame.add(buttonsPanel, BorderLayout.SOUTH);
+
 
 frame.setLocationRelativeTo(null);
 
@@ -107,8 +234,24 @@ frame.setLocationRelativeTo(null);
   @Override
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == buttons[3]) {
-      JFileChooser fileChooser = new JFileChooser();
-      fileChooser.showOpenDialog(null);
+      // JFileChooser fileChooser = new JFileChooser();
+      // fileChooser.showOpenDialog(null);
+      frame.dispose();
+      new profileUI();
+    }
+
+    // making the utilities responsive
+    if (e.getSource()== transferLabel) {
+      frame.dispose();
+      new transferUI();
+    }
+    if (e.getSource()== dataLabel) {
+      
+    }
+    if (e.getSource()== sports) {
+      
     }
   }
+
+  
 }
