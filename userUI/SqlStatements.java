@@ -45,7 +45,7 @@ public class SqlStatements {
         }
     }
 
-    public  boolean select(String statement) {
+    public boolean select(String statement) {
 
         try {
             ResultSet rs = st.executeQuery(statement);
@@ -60,17 +60,22 @@ public class SqlStatements {
 
     }
 
-    public  String selectCustomerId(String statement){
-        String customerId = "";
+    public  String[] selectCustomerData(String statement){
+        String[] customerData = new String[3];
         try{
             ResultSet rs = st.executeQuery(statement);
-            if(rs.next()){
-                customerId = rs.getString(1);
+            int index = 1;
+            while(rs.next()){
+//                System.out.println(rs.getString(index));
+//                System.out.println(rs.getString(index+1));
+                customerData[index] = rs.getString(index);
+                customerData[index+1] = rs.getString(index+1);
+//                System.out.println(index);
             }
         }catch (Exception e){
 
         }
-        return customerId;
+        return customerData;
     }
 
 
@@ -118,4 +123,11 @@ public class SqlStatements {
 //            conditions.put("gender", "female");
 //            new SqlStatements().select("customer", cols, conditions );
 //    }
+
+    public static void main(String[] args) {
+        SqlStatements sq = new SqlStatements();
+        String[] data = sq.selectCustomerData(String.format("select customerId from account where accountNumber = '%s'", "9536956717"));
+         data = sq.selectCustomerData(String.format("Select fistName, lastName from customer where customerId = '%s' ", "29"));
+        System.out.println(data[1] + data[2]);
+    }
 }
