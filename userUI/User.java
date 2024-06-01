@@ -2,6 +2,8 @@ package Entities;
 
 import Database.SqlStatements;
 
+import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -19,6 +21,14 @@ public class User {
     public  String accountType;
     public  double balance;
     public  String openDate;
+    public String pin;
+    public Double  loanAmount;
+    public Double interestRate;
+    public Date startDate;
+    public Date endDate;
+    public String transactionType;
+    public Date transactionDate;
+    public Double amount;
     Statement st;
 
     public User(){
@@ -62,9 +72,39 @@ public class User {
                 accountType = rs.getString(3);
                 balance = rs.getDouble(4);
                 openDate = rs.getString(5);
+                pin = rs.getString(6);
 //            System.out.println(accountType);
+                createLoan();
             }
         } catch (Exception e) {
+
+        }
+    }
+
+    public void createLoan(){
+        try{
+            ResultSet rs = st.executeQuery(String.format("Select * from loan where customerId = '%s'", customerID));
+            while(rs.next()){
+                loanAmount = rs.getDouble(2);
+                interestRate = rs.getDouble(3);
+                startDate = rs.getDate(4);
+                endDate = rs.getDate(5);
+                System.out.println(loanAmount);
+            }
+        }catch (Exception e){
+
+        }
+    }
+
+    public void createTransaction(){
+        try{
+            ResultSet rs = st.executeQuery(String.format("Select * from transaction where accountNumber = ''", accountNumber));
+            while(rs.next()){
+                transactionType = rs.getString(3);
+                amount = rs.getDouble(4);
+                transactionDate = rs.getDate(5);
+            }
+        }catch(Exception e){
 
         }
     }
