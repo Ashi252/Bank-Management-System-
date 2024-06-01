@@ -36,7 +36,7 @@ public class login implements ActionListener{
     JLabel Massage = new JLabel();
     JLabel singUpMassage = new JLabel();
     JTextField textField = new JTextField();
-    ImageIcon image = new ImageIcon("Images/Untitled.png");
+    ImageIcon image = new ImageIcon("src/Images/Untitled.png");
     SqlStatements st = new SqlStatements();
 
 
@@ -148,6 +148,8 @@ public class login implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String password = String.valueOf(Password.getPassword());
+        String number = textField.getText();
         // setting a default value for the reset button
         if(e.getSource()==rButton){
             textField.setText(null);
@@ -162,13 +164,14 @@ public class login implements ActionListener{
             Massage.setText(null);
         }
         if (Password.getPassword().length == 8 && e.getSource()==logIn) {
-            String statement = String.format("Select * from customer where contactNumber = '%s'",textField.getText());
-            boolean present = st.select(statement);
-            if(present){
+            String statement = String.format("Select contactNumber, password from customer where contactNumber = '%s'",textField.getText());
+            String[] data = st.selectCustomerData(statement);
+            System.out.println(data[1]+data[2]);
+            if(password.equals(data[2]) && number.equals(data[1])){
                 frame.dispose();
                 User user = new User();
                 user.createCustomer(textField.getText());
-                new HomePageFrame(user);
+                new homePage(user);
 
 //                HomePageFrame.main(null);
             }else{
