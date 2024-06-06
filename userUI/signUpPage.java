@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.*;
 
-import static Database.SqlStatements.*;
+
 
 
 public class signUpPage implements ActionListener {
@@ -59,7 +59,7 @@ public class signUpPage implements ActionListener {
             "2019","2020","2021","2022","2023","2024"});
 
     JCheckBox terms = new JCheckBox("Accept Terms and Conditions");
-    ImageIcon image = new ImageIcon("Images/Untitled.png");
+    ImageIcon image = new ImageIcon("src/Images/Untitled.png");
     JProgressBar bar = new JProgressBar(0,500);
     static JComboBox<String> account = new JComboBox<>(new String[]{"Savings", "Current", "Fixed Deposit"});
     JLabel AccountType = new JLabel("Account Type");
@@ -296,10 +296,15 @@ public class signUpPage implements ActionListener {
             //if user does not exist in DB then Sql bach statement to insert user data into the database
 
             // if data is successfully inserted
-            insertData();
-            Massage.setForeground(Color.BLUE);
-            showMessage("Sign up successful. Redirecting to login page...");
-            bar.setString("Account Created Successfully");
+            if(insertData())
+            {
+                Massage.setForeground(Color.BLUE);
+                showMessage("Sign up successful. Redirecting to login page...");
+                bar.setString("Account Created Successfully");
+            }else{
+                Massage.setText("You already have an account with us.");
+                bar.setString("Account created unsuccessfully");
+            }
         }
     }
 
@@ -472,7 +477,7 @@ public class signUpPage implements ActionListener {
 
     }
 
-    public void insertData(){
+    public boolean insertData(){
         String  firstName = textField.getText().trim();
         String lastname = textField1.getText().trim();
         String Day = date.getSelectedItem().toString();
@@ -483,31 +488,33 @@ public class signUpPage implements ActionListener {
         String password = String.valueOf(passwordField.getPassword());
         String phoneNum = textField2.getText();
         String accountType = account.getSelectedItem().toString();
+        String email = EmailField.getText().trim();
+        String address = AddressField.getText().trim();
         String pin = String.valueOf(pintxt.getPassword());
          SqlStatements st = new SqlStatements();
         String statement = "";
-        if (!isUnique(phoneNum, st)) {
-            statement = String.format("insert into customer(fistName, lastName, dob, gender, contactNumber, password) values('%s', '%s', '%s', '%s', '%s', '%s') ", firstName, lastname, dob, Gender, phoneNum, password);
+        if (!isPresent(phoneNum, st)) {
+            statement = String.format("insert into customer(fistName, lastName, dob, gender, contactNumber,address, email, password) values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') ", firstName, lastname, dob, Gender, phoneNum,email, address, password);
             st.insert(statement);
+            statement = String.format("select customerId from customer where contactNumber = '%s'", phoneNum);
+            String[] customerData = st.selectCustomerData(statement);
+            String customerId = customerData[1];
+            String accountNum = generateAccountNum();
+            statement = String.format("insert into account values('%s', '%s', '%s', '0.00', '%s', '%s')", accountNum, customerId, accountType, LocalDate.now(), pin);
+            st.insert(statement);
+            return true;
 //            Massage.setText("You already have an account");
 //            Massage.setForeground(Color.RED);
         }
-        statement = String.format("select customerId from customer where contactNumber = '%s'", phoneNum);
-        String customerId = st.selectCustomerId(statement);
-        String accountNum = generateAccountNum();
-        statement = String.format("insert into account values('%s', '%s', '%s', '0.00', '%s', '%s')", accountNum, customerId, accountType, LocalDate.now(), pin);
-        st.insert(statement);
+    return false;
     }
 
 
 
-    public static boolean isUnique(String phoneNum, SqlStatements st){
+    public static boolean isPresent(String phoneNum, SqlStatements st){
         String statement = String.format("select * from customer where contactNumber = '%s'", phoneNum);
-        boolean present = st.select(statement);
-        if(present){
-            return true;
-        }
-        return false;
+        return st.select(statement);
+
     }
 
     public static void main(String[] args) {
