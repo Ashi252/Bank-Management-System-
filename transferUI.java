@@ -37,6 +37,9 @@ public class transferUI extends JFrame implements ActionListener {
     User customer;
     SqlStatements sq = new SqlStatements();
     String receiverId;
+    String[] customerData;
+    String receiverFname, receiverLname;
+    double receiverBalance;
 
     transferUI(User customer){
         this.customer = customer;
@@ -69,15 +72,19 @@ public class transferUI extends JFrame implements ActionListener {
             @Override
             public void focusLost(FocusEvent e) {
                 if (Banks.getSelectedItem().equals("Realm Bank")) {
-                    String statement = String.format("select customerId from account where accountNumber = '%s'", accountNumber.getText());
-                    String[] customerData;
+                    String statement = String.format("select customerId, balance from account where accountNumber = '%s'", accountNumber.getText());
                     customerData = sq.selectCustomerData(statement);
-                    System.out.println(customerData[1]);
-                    receiverId = customerData[1];
+//                    System.out.println(customerData[1]);
+                    receiverId = customerData[0];
+                    receiverBalance = Double.parseDouble(customerData[1]);
+//                    System.out.println(receiverBalance);
                     if (sq.select(statement)) {
                         if (!accountNumber.getText().equals(customer.accountNumber)) {
-                            customerData = sq.selectCustomerData(String.format("Select fistName, lastName from customer where customerId = '%s' ", customerData[1]));
-                            customerName.setText(customerData[1] + " " + customerData[2]);
+                            customerData = sq.selectCustomerData(String.format("Select fistName, lastName from customer where customerId = '%s' ", receiverId));
+//                            System.out.println(customerData[0] + customerData[1] );
+                            receiverFname = customerData[0];
+                            receiverLname = customerData[1];
+                            customerName.setText(customerData[0] + " " + customerData[1]);
                             customerName.setForeground(Color.RED);
                         } else {
                             customerName.setText("Invalid customer");
@@ -122,7 +129,7 @@ public class transferUI extends JFrame implements ActionListener {
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setSize(500,650);
-        this.getContentPane().setBackground(new Color(0xfafafa));
+        this.getContentPane().setBackground(homePage.color1);
         this.setVisible(true);
         this.setIconImage(image.getImage());
         this.setTitle("Realm Bank");
@@ -154,7 +161,7 @@ public class transferUI extends JFrame implements ActionListener {
     public boolean check(){
         String password = String.valueOf(pin.getPassword());
         String Account = accountNumber.getText().trim();
-        int amt = Integer.parseInt(amount.getText().trim());
+        double amt = Double.parseDouble(amount.getText().trim());
         String bank = (String) Banks.getSelectedItem();
 
         if (Account.isEmpty() || amt == 0 || password.length() == 0) {
@@ -188,18 +195,22 @@ public class transferUI extends JFrame implements ActionListener {
 
 
     // processing the transaction, checking if the information corresponds with the db
-    private boolean approve(String password, String account, int amt, String bank){
+    private boolean approve(String password, String account, double amt, String bank){
 
         int n = JOptionPane.showConfirmDialog(this, "Are you sure you want to approve this transaction of "+ amount.getText(), "Confirm", JOptionPane.YES_NO_OPTION);
         if (n == JOptionPane.YES_OPTION) {
             if(bank.equals("Realm Bank")){
                 if (password.equals(customer.pin) && amt < customer.balance && !customerName.equals("")) {
                     customer.balance -= amt;
+                    receiverBalance += amt;
                     String statement = String.format("Update account set balance = '%s' where customerId = '%s'",customer.balance, customer.customerID);
                     sq.Update(statement);
-                    statement = String.format("Update account set balance = '%s' where customerId = '%s'", amt, receiverId);
+                    statement = String.format("Update account set balance = '%s' where customerId = '%s'", receiverBalance, receiverId);
                     if(sq.Update(statement)) {
-                        statement = String.format("Insert into transaction(accountNumber, transactionType, amount, transactionDate, receiver) values '%s', '%s', '%s', '%s', '%s'", customer.accountNumber, "debit", amt, LocalDate.now(),account);
+                        statement = String.format("Insert into transaction(accountNumber, transactionType, amount, transactionDate, receiver) values ('%s', '%s', '%s', '%s', '%s')", customer.accountNumber, "debit", amt, LocalDate.now(),account);
+                        sq.insert(statement);
+                        statement = String.format("Insert into transaction(accountNumber, transactionType, amount, transactionDate, receiver) values ('%s', '%s', '%s', '%s', '%s')", account, "credit", amt, LocalDate.now(),customer.accountNumber);
+                        System.out.println(statement);
                         sq.insert(statement);
                         successfulTrans();
                     }else{
@@ -213,7 +224,7 @@ public class transferUI extends JFrame implements ActionListener {
                     customer.balance -= amt;
                     String statement = String.format("Update account set balance = '%s' where customerId = '%s'",customer.balance, customer.customerID);
                     if(sq.Update(statement)) {
-                        statement = String.format("Insert into transaction(accountNumber, transactionType, amount, transactionDate, receiver) values '%s', '%s', '%s', '%s', '%s'", customer.accountNumber, "debit", amt, LocalDate.now(),account);
+                        statement = String.format("Insert into transaction(accountNumber, transactionType, amount, transactionDate, receiver) values ('%s', '%s', '%s', '%s', '%s')", customer.accountNumber, "debit", amt, LocalDate.now(),account);
                         sq.insert(statement);
                         successfulTrans();
                     }else{
@@ -254,7 +265,7 @@ public class transferUI extends JFrame implements ActionListener {
     }
 
     public void successfulTrans(){
-        System.out.println(customer.balance);
+//        System.out.println(customer.balance);
         showMessage("Transaction Successful");
         bar.setString("Transaction Approved");
     }
@@ -265,6 +276,8 @@ public class transferUI extends JFrame implements ActionListener {
     }
     public static void main(String[] args) {
         User user = new User();
-        new transferUI(user);
+        user.createCustomer("08132456787");
+        transferUI trans = new transferUI(user);
+
     }
 }

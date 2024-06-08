@@ -144,7 +144,7 @@ public class profileUI implements ActionListener {
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(500,650);
-        frame.getContentPane().setBackground(new Color(0xfafafa));
+        frame.getContentPane().setBackground(homePage.color1);
         frame.setVisible(true);
         frame.setIconImage(image.getImage());
         frame.setTitle("Realm Bank");
