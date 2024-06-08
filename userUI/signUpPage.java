@@ -275,7 +275,7 @@ public class signUpPage implements ActionListener {
             Massage.setForeground(Color.RED);
         }else if(!validatePhone(textField2.getText()))
         {
-            Massage.setText("Phone no should be of format 080 or 070 or 090.... and should be 11 digits");
+            Massage.setText("Phone format: 080********");
             Massage.setForeground(Color.RED);
         }else if(!validateEmail(EmailField.getText())){
             Massage.setText("Invalid email address");

@@ -6,15 +6,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class SqlStatements {
-    public static Integer customerID;
-    public static String FirstName;
-    public static String LastName;
-    public static String DOB;
-    public static String Email;
-    public static String gender;
-    public static String Address;
-    public static String ContactNumber;
-    public static String UserPass;
     static Statement st = null;
 
     public SqlStatements(){
@@ -26,7 +17,7 @@ public class SqlStatements {
                 password = "";
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3400/luminous", "root", "");
+            Connection conn = DriverManager.getConnection(url, user, password);
             System.out.println("Driver loaded");
             st = conn.createStatement();
             System.out.println("Statement created");
@@ -64,12 +55,13 @@ public class SqlStatements {
         String[] customerData = new String[3];
         try{
             ResultSet rs = st.executeQuery(statement);
-            int index = 1;
+            int index = 0;
             while(rs.next()){
 //                System.out.println(rs.getString(index));
 //                System.out.println(rs.getString(index+1));
-                customerData[index] = rs.getString(index);
-                customerData[index+1] = rs.getString(index+1);
+                customerData[index] = rs.getString(index+1);
+                customerData[index+1] = rs.getString(index+2);
+                customerData[index+2] = rs.getString(index+3);
 //                System.out.println(index);
             }
         }catch (Exception e){
@@ -78,6 +70,16 @@ public class SqlStatements {
         return customerData;
     }
 
+
+    public boolean Update(String statement){
+        try{
+            st.execute(statement);
+            return true;
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }
 
 
 
@@ -127,7 +129,8 @@ public class SqlStatements {
     public static void main(String[] args) {
         SqlStatements sq = new SqlStatements();
         String[] data = sq.selectCustomerData(String.format("select customerId from account where accountNumber = '%s'", "9536956717"));
-         data = sq.selectCustomerData(String.format("Select fistName, lastName from customer where customerId = '%s' ", "29"));
-        System.out.println(data[1] + data[2]);
+         data = sq.selectCustomerData(String.format("select customerId, balance from account where accountNumber = '%s' ", "3221374193"));
+         double balance = Double.parseDouble(data[1]);
+        System.out.println(data[0] + balance);
     }
 }

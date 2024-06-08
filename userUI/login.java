@@ -166,8 +166,8 @@ public class login implements ActionListener{
         if (Password.getPassword().length == 8 && e.getSource()==logIn) {
             String statement = String.format("Select contactNumber, password from customer where contactNumber = '%s'",textField.getText());
             String[] data = st.selectCustomerData(statement);
-            System.out.println(data[1]+data[2]);
-            if(password.equals(data[2]) && number.equals(data[1])){
+            System.out.println(data[0]+data[1]);
+            if(password.equals(data[1]) && number.equals(data[0])){
                 frame.dispose();
                 User user = new User();
                 user.createCustomer(textField.getText());

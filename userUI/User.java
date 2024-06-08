@@ -89,7 +89,7 @@ public class User {
                 interestRate = rs.getDouble(3);
                 startDate = rs.getDate(4);
                 endDate = rs.getDate(5);
-                System.out.println(loanAmount);
+//                System.out.println(loanAmount);
             }
         }catch (Exception e){
 

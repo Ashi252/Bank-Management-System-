@@ -11,20 +11,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.*;
 // import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-
-
 
 
 public class homePage implements ActionListener{
+    public static Color color1;
     JFrame frame = new JFrame();
     ImageIcon frameIcon = new ImageIcon("src/Images/Untitled.png");
     JPanel buttonsPanel = new JPanel();
@@ -53,7 +45,7 @@ public class homePage implements ActionListener{
     ImageIcon bills = new ImageIcon("src/Images/hand-bill.png");
     ImageIcon loanBills = new ImageIcon("src/Images/loan.png");
     User customer;
-
+    JButton theme = new JButton();
     public void buttons(){
         for(int i=0; i<4;i++){
             buttons[i] = new JButton();
@@ -85,8 +77,11 @@ public class homePage implements ActionListener{
         balances.setOpaque(true);
         balances.setBackground(new Color(0xfafafa));
         balances.setFocusable(false);
-
-        Hi.setBounds(180,125,120,13);
+       theme.setBounds(200,510,80,20);
+       theme.setText("Theme");
+       theme.setCursor(new Cursor(Cursor.HAND_CURSOR));
+       theme.addActionListener(this);
+      Hi.setBounds(180,125,120,13);
         Hi.setText("Hi " + customer.FirstName);
         Hi.setForeground(Color.BLUE);
         Hi.setFont(new Font(null, Font.BOLD, 10));
@@ -189,6 +184,7 @@ public class homePage implements ActionListener{
         BPanel.add(buttonsPanel);
         BPanel.add(balances);
         BPanel.add(loan);
+        BPanel.add(theme);
         frame.add(BPanel);
 
 
@@ -218,7 +214,7 @@ public class homePage implements ActionListener{
         // initializing and setting the frame features
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(500,650);
-        frame.getContentPane().setBackground(new Color(0xfafafa));
+        frame.getContentPane().setBackground(color1);
         frame.setVisible(true);
         frame.setIconImage(frameIcon.getImage());
         frame.setTitle("Realm Bank");
@@ -233,7 +229,8 @@ public class homePage implements ActionListener{
 
 
     public static void main(String[] args) {
-//        new homePage();
+        User user = new User();
+        new homePage(user);
     }
 
     @Override
@@ -251,10 +248,22 @@ public class homePage implements ActionListener{
             new transferUI(customer);
         }
         if (e.getSource()== dataLabel) {
-
+            frame.dispose();
+            new buyCredit(customer);
         }
         if (e.getSource()== sports) {
 
+        }
+        if(e.getSource() == PayBills){
+            frame.dispose();
+            new billUI(customer);
+        }
+        if (e.getSource()==theme){
+            JColorChooser C = new JColorChooser();
+            Color color = JColorChooser.showDialog(null,"Set Color theme",Color.black);
+            frame.getContentPane().setBackground(color);
+            buttonsPanel.setBackground(color);
+            color1 = color;
         }
     }
 
